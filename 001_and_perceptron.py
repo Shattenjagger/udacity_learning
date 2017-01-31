@@ -2,7 +2,7 @@ import pandas as pd
 
 weight1 = 1.0
 weight2 = 1.0
-bias = 2.0
+bias = -2.0
 
 
 # DON'T CHANGE ANYTHING BELOW
