@@ -119,8 +119,8 @@ class MSE(Node):
         # an elementwise subtraction as expected.
         y = self.inbound_nodes[0].value.reshape(-1, 1)
         a = self.inbound_nodes[1].value.reshape(-1, 1)
-        # TODO: your code here
-        pass
+
+        self.value = np.sum(np.square(y - a)) / len(y)
 
 
 def topological_sort(feed_dict):
