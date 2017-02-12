@@ -15,7 +15,7 @@ class Node(object):
         for node in inbound_nodes:
             node.outbound_nodes.append(self)
 
-    def forward():
+    def forward(self):
         raise NotImplementedError
 
 
@@ -50,6 +50,10 @@ class Linear(Node):
 
         Your code goes here!
         """
+        inputs = self.inbound_nodes[0].value
+        weights = self.inbound_nodes[1].value
+        bias = self.inbound_nodes[2].value
+        self.value = np.dot(inputs, weights) + bias
 
 
 def topological_sort(feed_dict):
