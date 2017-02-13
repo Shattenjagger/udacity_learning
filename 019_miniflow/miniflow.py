@@ -9,6 +9,7 @@ class Node(object):
 
         `inbound_nodes`: A list of nodes with edges into this node.
     """
+
     def __init__(self, inbound_nodes=[]):
         """
         Node's constructor (runs when the object is instantiated). Sets
@@ -49,6 +50,7 @@ class Input(Node):
     """
     A generic input into the network.
     """
+
     def __init__(self):
         # The base class constructor has to run to set all
         # the properties here.
@@ -71,10 +73,12 @@ class Input(Node):
         for n in self.outbound_nodes:
             self.gradients[self] += n.gradients[self]
 
+
 class Linear(Node):
     """
     Represents a node that performs a linear transform.
     """
+
     def __init__(self, X, W, b):
         # The base class (Node) constructor. Weights and bias
         # are treated like inbound nodes.
@@ -112,6 +116,7 @@ class Sigmoid(Node):
     """
     Represents a node that performs the sigmoid activation function.
     """
+
     def __init__(self, node):
         # The base class constructor.
         Node.__init__(self, [node])
@@ -174,7 +179,7 @@ class MSE(Node):
         self.m = self.inbound_nodes[0].value.shape[0]
         # Save the computed output for backward.
         self.diff = y - a
-        self.value = np.mean(self.diff**2)
+        self.value = np.mean(self.diff ** 2)
 
     def backward(self):
         """
@@ -256,6 +261,6 @@ def sgd_update(trainables, learning_rate=1e-2):
     # TODO: update all the `trainables` with SGD
     # You can access and assign the value of a trainable with `value` attribute.
     # Example:
-    # for t in trainables:
-    #   t.value = your implementation here
+    for t in trainables:
+        t.value -= t.gradients[t] * learning_rate
     pass
