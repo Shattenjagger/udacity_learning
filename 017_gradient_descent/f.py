@@ -26,8 +26,7 @@ def df(x):
 
 # Random number better 0 and 10,000. Feel free to set x whatever you like.
 x = random.randint(0, 10000)
-# TODO: Set the learning rate
-learning_rate = ?
+learning_rate = 0.1
 epochs = 100
 
 for i in range(epochs+1):
