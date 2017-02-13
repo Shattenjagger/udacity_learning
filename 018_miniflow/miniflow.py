@@ -12,6 +12,7 @@ class Node(object):
 
         `inbound_nodes`: A list of nodes with edges into this node.
     """
+
     def __init__(self, inbound_nodes=[]):
         """
         Node's constructor (runs when the object is instantiated). Sets
@@ -52,6 +53,7 @@ class Input(Node):
     """
     A generic input into the network.
     """
+
     def __init__(self):
         # The base class constructor has to run to set all
         # the properties here.
@@ -80,6 +82,7 @@ class Linear(Node):
     """
     Represents a node that performs a linear transform.
     """
+
     def __init__(self, X, W, b):
         # The base class (Node) constructor. Weights and bias
         # are treated like inbound nodes.
@@ -117,6 +120,7 @@ class Sigmoid(Node):
     """
     Represents a node that performs the sigmoid activation function.
     """
+
     def __init__(self, node):
         # The base class constructor.
         Node.__init__(self, [node])
@@ -150,14 +154,8 @@ class Sigmoid(Node):
         for n in self.outbound_nodes:
             # Get the partial of the cost with respect to this node.
             grad_cost = n.gradients[self]
-            """
-            TODO: Your code goes here!
-
-            Set the gradients property to the gradients with respect to each input.
-
-            NOTE: See the Linear node and MSE node for examples.
-            """
-
+            sigmoid_value = self._sigmoid(self.inbound_nodes[0].value)
+            self.gradients[self.inbound_nodes[0]] += sigmoid_value * (1 - sigmoid_value) * grad_cost
 
 class MSE(Node):
     def __init__(self, y, a):
@@ -187,7 +185,7 @@ class MSE(Node):
         self.m = self.inbound_nodes[0].value.shape[0]
         # Save the computed output for backward.
         self.diff = y - a
-        self.value = np.mean(self.diff**2)
+        self.value = np.mean(self.diff ** 2)
 
     def backward(self):
         """
