@@ -139,3 +139,5 @@ ENV/
 .idea/udacity_learning.iml
 .idea/UdacityLearning.iml
 .idea/markdown-navigator/
+
+.idea/
