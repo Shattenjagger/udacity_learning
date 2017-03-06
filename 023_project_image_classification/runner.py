@@ -109,7 +109,7 @@ def conv_net(x, keep_prob):
     # out = tf.layers.dropouout, keep_prob)
     out = conv2d_maxpool(out, 64, [3, 3], [1, 1], [2, 2], [1, 1])
     # out = tf.layers.dropout(out, keep_prob)
-    # out = conv2d_maxpool(out, 32, [3, 3], [1, 1], [2, 2], [1, 1])
+    out = conv2d_maxpool(out, 128, [3, 3], [1, 1], [2, 2], [1, 1])
     out = tf.layers.dropout(out, keep_prob)
 
     out = flatten(out)
@@ -173,9 +173,9 @@ def print_stats(session, feature_batch, label_batch, cost, accuracy):
     : accuracy: TensorFlow accuracy function
     """
     global valid_features, valid_labels
-    test_valid_size = 768
+    test_valid_size = 512
     loss = session.run(cost, feed_dict={x: feature_batch, y: label_batch, keep_prob: 1.})
-    valid_acc = session.run(accuracy, feed_dict={x: valid_features, y: valid_labels[:test_valid_size], keep_prob: 1.})
+    valid_acc = session.run(accuracy, feed_dict={x: valid_features[:test_valid_size], y: valid_labels[:test_valid_size], keep_prob: 1.})
     print("Loss: {:>10.4f} Validation Accuracy: {:.6f}".format(loss, valid_acc))
 
 
