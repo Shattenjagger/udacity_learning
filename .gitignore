@@ -155,3 +155,7 @@ t10k-labels-idx1-ubyte.gz
 /023_project_image_classification/preprocess_batch_2.p
 /023_project_image_classification/preprocess_validation.p
 /023_project_image_classification/cifar-10-batches-py/
+/023_project_image_classification/image_classification.index
+/023_project_image_classification/image_classification.meta
+/023_project_image_classification/image_classification.data-00000-of-00001
+/023_project_image_classification/checkpoint
