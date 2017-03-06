@@ -106,9 +106,9 @@ def conv_net(x, keep_prob):
     : return: Tensor that represents logits
     """
     out = conv2d_maxpool(x, 32, [3, 3], [1, 1], [2, 2], [1, 1])
-    # out = tf.layers.dropouout, keep_prob)
+    out = tf.layers.dropout(out, keep_prob)
     out = conv2d_maxpool(out, 64, [3, 3], [1, 1], [2, 2], [1, 1])
-    # out = tf.layers.dropout(out, keep_prob)
+    out = tf.layers.dropout(out, keep_prob)
     out = conv2d_maxpool(out, 128, [3, 3], [1, 1], [2, 2], [1, 1])
     out = tf.layers.dropout(out, keep_prob)
 
