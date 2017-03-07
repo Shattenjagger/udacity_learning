@@ -1,6 +1,7 @@
 """
 DON'T MODIFY ANYTHING IN THIS CELL
 """
+import datetime
 import pickle
 import problem_unittests as tests
 import helper
@@ -49,9 +50,8 @@ def conv2d_maxpool(x_tensor, conv_num_outputs, conv_ksize, conv_strides, pool_ks
     : return: A tensor that represents convolution and max pooling of x_tensor
     """
     s = [conv_ksize[0], conv_ksize[1], x_tensor.shape[3].value, conv_num_outputs]
-    print(s)
-    weights = tf.Variable(tf.random_normal(shape=s))
-    b = tf.Variable(tf.random_normal([conv_num_outputs]))
+    weights = tf.Variable(tf.random_normal(shape=s, stddev=0.1))
+    b = tf.Variable(tf.random_normal([conv_num_outputs], stddev=0.1))
     out = tf.nn.conv2d(x_tensor, weights, strides=[1, conv_strides[0], conv_strides[1], 1], padding='SAME')
     out = tf.nn.bias_add(out, b)
     out = tf.nn.relu(out)
@@ -78,8 +78,8 @@ def fully_conn(x_tensor, num_outputs):
     : num_outputs: The number of output that the new tensor should be.
     : return: A 2-D tensor where the second dimension is num_outputs.
     """
-    w = tf.Variable(tf.random_normal([x_tensor.shape[1].value, num_outputs]))
-    b = tf.Variable(tf.random_normal([num_outputs]))
+    w = tf.Variable(tf.random_normal([x_tensor.shape[1].value, num_outputs], stddev=0.1))
+    b = tf.Variable(tf.random_normal([num_outputs], stddev=0.1))
     out = tf.add(tf.matmul(x_tensor, w), b)
     out = tf.nn.relu(out)
     return out
@@ -92,8 +92,8 @@ def output(x_tensor, num_outputs):
     : num_outputs: The number of output that the new tensor should be.
     : return: A 2-D tensor where the second dimension is num_outputs.
     """
-    w = tf.Variable(tf.random_normal([x_tensor.shape[1].value, num_outputs]))
-    b = tf.Variable(tf.random_normal([num_outputs]))
+    w = tf.Variable(tf.random_normal([x_tensor.shape[1].value, num_outputs], stddev=0.1))
+    b = tf.Variable(tf.random_normal([num_outputs], stddev=0.1))
     out = tf.add(tf.matmul(x_tensor, w), b)
     return out
 
@@ -105,17 +105,17 @@ def conv_net(x, keep_prob):
     : keep_prob: Placeholder tensor that hold dropout keep probability.
     : return: Tensor that represents logits
     """
-    out = conv2d_maxpool(x, 32, [3, 3], [1, 1], [2, 2], [1, 1])
-    out = tf.layers.dropout(out, keep_prob)
-    out = conv2d_maxpool(out, 64, [3, 3], [1, 1], [2, 2], [1, 1])
-    out = tf.layers.dropout(out, keep_prob)
-    out = conv2d_maxpool(out, 128, [3, 3], [1, 1], [2, 2], [1, 1])
+    out = conv2d_maxpool(x, 32, [2, 2], [1, 1], [2, 2], [1, 1])
+    out = conv2d_maxpool(out, 32, [2, 2], [1, 1], [2, 2], [1, 1])
+    # out = tf.layers.dropout(out, keep_prob)
+    # out = conv2d_maxpool(out, 64, [2, 2], [1, 1], [1, 1], [1, 1])
+    out = conv2d_maxpool(out, 64, [2, 2], [1, 1], [2, 2], [1, 1])
     out = tf.layers.dropout(out, keep_prob)
 
     out = flatten(out)
 
-    out = fully_conn(out, 512)
-    out = tf.layers.dropout(out, keep_prob)
+    out = fully_conn(out, 1024)
+    # out = tf.layers.dropout(out, keep_prob)
     # out = fully_conn(out, 64)
     # out = tf.layers.dropout(out, keep_prob)
     # out = fully_conn(out, 32)
@@ -173,14 +173,13 @@ def print_stats(session, feature_batch, label_batch, cost, accuracy):
     : accuracy: TensorFlow accuracy function
     """
     global valid_features, valid_labels
-    test_valid_size = 512
     loss = session.run(cost, feed_dict={x: feature_batch, y: label_batch, keep_prob: 1.})
-    valid_acc = session.run(accuracy, feed_dict={x: valid_features[:test_valid_size], y: valid_labels[:test_valid_size], keep_prob: 1.})
-    print("Loss: {:>10.4f} Validation Accuracy: {:.6f}".format(loss, valid_acc))
+    valid_acc = session.run(accuracy, feed_dict={x: valid_features, y: valid_labels, keep_prob: 1.})
+    print("[{}] Loss: {:>10.4f} Validation Accuracy: {:.6f}".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), loss, valid_acc))
 
 
 epochs = 120
-batch_size = 256
+batch_size = 1024
 keep_probability = 0.5
 
 print('Checking the Training on a Single Batch...')
