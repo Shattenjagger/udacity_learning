@@ -92,7 +92,7 @@ def test_model_inputs(model_inputs):
             'Source Sequence Length is not a Placeholder.'
 
         # Check name
-        assert input_data.name == 'input:0',\
+        assert input_data.name == 'input_data:0',\
             'Input has bad name.  Found name {}'.format(input_data.name)
         assert target_sequence_length.name == 'target_sequence_length:0',\
             'Target Sequence Length has bad name.  Found name {}'.format(target_sequence_length.name)
